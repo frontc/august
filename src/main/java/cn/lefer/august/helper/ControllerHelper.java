@@ -26,15 +26,9 @@ public final class ControllerHelper {
             for (Method method : methods) {
                 if (method.isAnnotationPresent(RequestMapping.class)) {
                     RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
-                    String requestMappingValue = requestMapping.value();
-                    if (requestMappingValue.matches("\\w+:/\\w*")) {
-                        String[] strs = requestMappingValue.split(":");
-                        if (strs.length == 2) {
-                            Request request = new Request(strs[0], strs[1]);
-                            Handler handler = new Handler(cls, method);
-                            ACTION_MAP.put(request, handler);
-                        }
-                    }
+                    Request request = new Request(requestMapping.method().toLowerCase(), requestMapping.path());
+                    Handler handler = new Handler(cls, method);
+                    ACTION_MAP.put(request, handler);
                 }
             }
         }

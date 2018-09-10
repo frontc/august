@@ -14,5 +14,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RequestMapping {
-    String value();//请求类型与路径
+    String method();//请求方法
+    String path();//请求路径
 }
