@@ -4,6 +4,8 @@ import cn.lefer.august.annotation.Controller;
 import cn.lefer.august.annotation.Service;
 import cn.lefer.august.util.ClassUtil;
 
+import java.lang.annotation.Annotation;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -15,40 +17,66 @@ import java.util.stream.Collectors;
  **/
 public class ClassHelper {
     private static final Set<Class<?>> CLASS_SET;
+
     static {
-        String basePackage=ConfigHelper.getAppBasePackage();
+        String basePackage = ConfigHelper.getAppBasePackage();
         CLASS_SET = ClassUtil.getClassSet(basePackage);
     }
 
     /**
      * 获取所有类
-     * @return Set<Class<?>>
+     *
+     * @return Set<Class       <       ?>>
      */
-    public static Set<Class<?>> getClassSet(){
+    public static Set<Class<?>> getClassSet() {
         return CLASS_SET;
     }
 
     /**
      * 获取所有service注解类
-     * @return Set<Class<?>>
+     *
+     * @return Set<Class       <       ?>>
      */
-    public static Set<Class<?>> getServiceClassSet(){
-        return CLASS_SET.stream().filter(cls->cls.isAnnotationPresent(Service.class)).collect(Collectors.toSet());
+    public static Set<Class<?>> getServiceClassSet() {
+        return CLASS_SET.stream().filter(cls -> cls.isAnnotationPresent(Service.class)).collect(Collectors.toSet());
     }
 
     /**
      * 获取所有Controller注解类
-     * @return Set<Class<?>>
+     *
+     * @return Set<Class       <       ?>>
      */
-    public static Set<Class<?>> getControllerClassSet(){
-        return CLASS_SET.stream().filter(cls->cls.isAnnotationPresent(Controller.class)).collect(Collectors.toSet());
+    public static Set<Class<?>> getControllerClassSet() {
+        return CLASS_SET.stream().filter(cls -> cls.isAnnotationPresent(Controller.class)).collect(Collectors.toSet());
     }
 
     /**
      * 获取所有bean
-     * @return Set<Class<?>>
+     *
+     * @return Set<Class       <       ?>>
      */
-    public static Set<Class<?>> getBeanClassSet(){
-        return CLASS_SET.stream().filter(cls->(cls.isAnnotationPresent(Controller.class)||cls.isAnnotationPresent(Service.class))).collect(Collectors.toSet());
+    public static Set<Class<?>> getBeanClassSet() {
+        return CLASS_SET.stream().filter(cls -> (cls.isAnnotationPresent(Controller.class) || cls.isAnnotationPresent(Service.class))).collect(Collectors.toSet());
     }
+
+    /**
+     * 获取指定类的所有派生类
+     *
+     * @param superClass 父类
+     * @return 子类集和
+     */
+    public static Set<Class<?>> getClassSetBySuper(Class<?> superClass) {
+        return CLASS_SET.stream().filter(cls -> superClass.isAssignableFrom(cls) && !superClass.equals(cls)).collect(Collectors.toSet());
+    }
+
+    /**
+     * 获取指定注解的所有类
+     *
+     * @param annotationClass 注解类
+     * @return 使用了注解的类集和
+     */
+    public static Set<Class<?>> getClassSetByAnnotation(Class<? extends Annotation> annotationClass) {
+        return CLASS_SET.stream().filter(cls -> cls.isAnnotationPresent(annotationClass)).collect(Collectors.toSet());
+    }
+
 }

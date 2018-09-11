@@ -1,9 +1,6 @@
 package cn.lefer.august;
 
-import cn.lefer.august.helper.BeanHelper;
-import cn.lefer.august.helper.ClassHelper;
-import cn.lefer.august.helper.ControllerHelper;
-import cn.lefer.august.helper.IOCHelper;
+import cn.lefer.august.helper.*;
 import cn.lefer.august.util.ClassUtil;
 
 /**
@@ -17,6 +14,7 @@ public final class HelperLoader {
         Class<?>[] classes = {
                 ClassHelper.class,
                 BeanHelper.class,
+                AOPHelper.class,
                 IOCHelper.class,
                 ControllerHelper.class
         };
