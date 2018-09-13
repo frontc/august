@@ -1,12 +1,12 @@
 package cn.lefer.august;
 
+import cn.lefer.august.kernel.BeanKernel;
+import cn.lefer.august.kernel.ConfigKernel;
+import cn.lefer.august.kernel.ControllerKernel;
 import cn.lefer.august.object.Data;
 import cn.lefer.august.object.Handler;
 import cn.lefer.august.object.Param;
 import cn.lefer.august.object.View;
-import cn.lefer.august.kernel.BeanKernel;
-import cn.lefer.august.kernel.ConfigKernel;
-import cn.lefer.august.kernel.ControllerKernel;
 import cn.lefer.august.util.CodecUtil;
 import cn.lefer.august.util.JsonUtil;
 import cn.lefer.august.util.ReflectionUtil;
@@ -91,13 +91,13 @@ public class DispatcherServlet extends HttpServlet {
                 if (StringUtils.isNotEmpty(path)) {
                     if (path.startsWith("/")) {
                         resp.sendRedirect(req.getContextPath() + path);
+                    } else {
+                        Map<String, Object> model = view.getModel();
+                        for (Map.Entry<String, Object> entry : model.entrySet()) {
+                            req.setAttribute(entry.getKey(), entry.getValue());
+                        }
+                        req.getRequestDispatcher(ConfigKernel.getAppJspPath() + path).forward(req, resp);
                     }
-                } else {
-                    Map<String, Object> model = view.getModel();
-                    for (Map.Entry<String, Object> entry : model.entrySet()) {
-                        req.setAttribute(entry.getKey(), entry.getValue());
-                    }
-                    req.getRequestDispatcher(ConfigKernel.getAppJspPath() + path).forward(req, resp);
                 }
             } else if (result instanceof Data) {
                 Data data = (Data) result;
