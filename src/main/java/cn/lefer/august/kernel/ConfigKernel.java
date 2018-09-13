@@ -1,6 +1,6 @@
 package cn.lefer.august.kernel;
 
-import cn.lefer.august.ConfigConstant;
+import cn.lefer.august.config.ConfigConstant;
 import cn.lefer.august.util.PropertiesUtil;
 
 import java.util.Properties;

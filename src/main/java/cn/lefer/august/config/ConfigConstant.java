@@ -1,4 +1,4 @@
-package cn.lefer.august;
+package cn.lefer.august.config;
 
 public interface ConfigConstant {
     String CONFIG_FILE = "august.properties";
