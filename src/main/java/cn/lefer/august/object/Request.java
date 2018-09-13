@@ -1,4 +1,4 @@
-package cn.lefer.august.bean;
+package cn.lefer.august.object;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;

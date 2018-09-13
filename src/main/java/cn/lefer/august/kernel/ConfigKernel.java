@@ -1,4 +1,4 @@
-package cn.lefer.august.helper;
+package cn.lefer.august.kernel;
 
 import cn.lefer.august.ConfigConstant;
 import cn.lefer.august.util.PropertiesUtil;
@@ -6,12 +6,12 @@ import cn.lefer.august.util.PropertiesUtil;
 import java.util.Properties;
 
 /**
- * 配置文件助手类
+ * 配置文件核心类：用于获取框架配置参数
  *
  * @author fangchao
  * @since 2018-08-21 15:59
  **/
-public final class ConfigHelper {
+public final class ConfigKernel {
     private static final Properties properties = PropertiesUtil.loadProperties(ConfigConstant.CONFIG_FILE);
 
     public static String getJdbcDriver(){

@@ -1,12 +1,12 @@
 package cn.lefer.august;
 
-import cn.lefer.august.bean.Data;
-import cn.lefer.august.bean.Handler;
-import cn.lefer.august.bean.Param;
-import cn.lefer.august.bean.View;
-import cn.lefer.august.helper.BeanHelper;
-import cn.lefer.august.helper.ConfigHelper;
-import cn.lefer.august.helper.ControllerHelper;
+import cn.lefer.august.object.Data;
+import cn.lefer.august.object.Handler;
+import cn.lefer.august.object.Param;
+import cn.lefer.august.object.View;
+import cn.lefer.august.kernel.BeanKernel;
+import cn.lefer.august.kernel.ConfigKernel;
+import cn.lefer.august.kernel.ControllerKernel;
 import cn.lefer.august.util.CodecUtil;
 import cn.lefer.august.util.JsonUtil;
 import cn.lefer.august.util.ReflectionUtil;
@@ -39,14 +39,14 @@ import java.util.Map;
 public class DispatcherServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
-        HelperLoader.init();
+        KernelLoader.init();
         ServletContext servletContext = config.getServletContext();
         //注册处理JSP的servlet
         ServletRegistration jspServlet = servletContext.getServletRegistration("jsp");
-        jspServlet.addMapping(ConfigHelper.getAppJspPath() + "*");
+        jspServlet.addMapping(ConfigKernel.getAppJspPath() + "*");
         //注册处理静态资源的servlet
         ServletRegistration resServlet = servletContext.getServletRegistration("default");
-        resServlet.addMapping(ConfigHelper.getAppAssertPath() + "*");
+        resServlet.addMapping(ConfigKernel.getAppAssertPath() + "*");
     }
 
     @Override
@@ -55,11 +55,11 @@ public class DispatcherServlet extends HttpServlet {
         String requestMetod = req.getMethod().toLowerCase();
         String requestPath = req.getPathInfo();
         //得到对应的处理器
-        Handler handler = ControllerHelper.getHandler(requestMetod, requestPath);
+        Handler handler = ControllerKernel.getHandler(requestMetod, requestPath);
         if (handler != null) {
             //得到对应的控制层实例
             Class<?> controllerClass = handler.getControllerClass();
-            Object controllerBean = BeanHelper.getBean(controllerClass);
+            Object controllerBean = BeanKernel.getBean(controllerClass);
             //得到请求参数
             Map<String, Object> paramMap = new HashMap<>();
             Enumeration<String> paramNames = req.getParameterNames();
@@ -97,7 +97,7 @@ public class DispatcherServlet extends HttpServlet {
                     for (Map.Entry<String, Object> entry : model.entrySet()) {
                         req.setAttribute(entry.getKey(), entry.getValue());
                     }
-                    req.getRequestDispatcher(ConfigHelper.getAppJspPath() + path).forward(req, resp);
+                    req.getRequestDispatcher(ConfigKernel.getAppJspPath() + path).forward(req, resp);
                 }
             } else if (result instanceof Data) {
                 Data data = (Data) result;

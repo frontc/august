@@ -1,4 +1,4 @@
-package cn.lefer.august.helper;
+package cn.lefer.august.kernel;
 
 import cn.lefer.august.annotation.Aspect;
 import cn.lefer.august.proxy.AspectProxy;
@@ -11,13 +11,13 @@ import java.lang.annotation.Annotation;
 import java.util.*;
 
 /**
- * AOP助手类
+ * AOP核心类：用于扫描aop代理并实例化代理类覆盖基础类
  *
  * @author fangchao
  * @since 2018-09-11 09:45
  **/
-public class AOPHelper {
-    private static final Logger logger = LoggerFactory.getLogger(AOPHelper.class);
+public class AOPKernel {
+    private static final Logger logger = LoggerFactory.getLogger(AOPKernel.class);
 
     static {
         try {
@@ -30,7 +30,7 @@ public class AOPHelper {
                 Class<?> targetClass = entry.getKey();
                 List<Proxy> proxyList = entry.getValue();
                 Object proxy = ProxyManager.createProxy(targetClass, proxyList);
-                BeanHelper.setBean(targetClass, proxy);
+                BeanKernel.setBean(targetClass, proxy);
             }
         } catch (Exception e) {
             logger.error("AOP代理异常", e);
@@ -45,7 +45,7 @@ public class AOPHelper {
      */
     private static Map<Class<?>, Set<Class<?>>> createProxyMap() throws Exception {
         Map<Class<?>, Set<Class<?>>> proxyMap = new HashMap<>();
-        Set<Class<?>> proxyClassSet = ClassHelper.getClassSetBySuper(AspectProxy.class);
+        Set<Class<?>> proxyClassSet = ClassKernel.getClassSetBySuper(AspectProxy.class);
         for (Class<?> proxyClass : proxyClassSet) {
             if (proxyClass.isAnnotationPresent(Aspect.class)) {
                 Aspect aspect = proxyClass.getAnnotation(Aspect.class);
@@ -58,7 +58,7 @@ public class AOPHelper {
 
     private static Set<Class<?>> getTargetClassSet(Aspect aspect) throws Exception {
         Class<? extends Annotation> annotationClass = aspect.value();
-        return annotationClass.equals(Aspect.class) ? new HashSet<>() : ClassHelper.getClassSetByAnnotation(annotationClass);
+        return annotationClass.equals(Aspect.class) ? new HashSet<>() : ClassKernel.getClassSetByAnnotation(annotationClass);
     }
 
     /**

@@ -1,4 +1,4 @@
-package cn.lefer.august.bean;
+package cn.lefer.august.object;
 
 import java.lang.reflect.Method;
 

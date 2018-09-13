@@ -1,8 +1,8 @@
-package cn.lefer.august.helper;
+package cn.lefer.august.kernel;
 
 import cn.lefer.august.annotation.RequestMapping;
-import cn.lefer.august.bean.Handler;
-import cn.lefer.august.bean.Request;
+import cn.lefer.august.object.Handler;
+import cn.lefer.august.object.Request;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -10,17 +10,16 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * 控制器助手类
- * eg:"get:/index"
+ * 控制层核心类：用于从控制层按照规定语义解析出action映射
  *
  * @author fangchao
  * @since 2018-09-10 14:18
  **/
-public final class ControllerHelper {
+public final class ControllerKernel {
     private static final Map<Request, Handler> ACTION_MAP = new HashMap<>();
 
     static {
-        Set<Class<?>> classSet = ClassHelper.getControllerClassSet();
+        Set<Class<?>> classSet = ClassKernel.getControllerClassSet();
         for (Class<?> cls : classSet) {
             Method[] methods = cls.getDeclaredMethods();
             for (Method method : methods) {

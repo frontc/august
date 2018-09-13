@@ -1,4 +1,4 @@
-package cn.lefer.august.bean;
+package cn.lefer.august.object;
 
 /**
  * 返回数据对象封装

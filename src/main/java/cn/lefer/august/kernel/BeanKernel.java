@@ -1,4 +1,4 @@
-package cn.lefer.august.helper;
+package cn.lefer.august.kernel;
 
 import cn.lefer.august.util.ReflectionUtil;
 
@@ -6,16 +6,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Bean容器
+ * Bean容器核心类，用于将所有bean类实例化并持有容器
  *
  * @author fangchao
  * @since 2018-09-10 13:48
  **/
-public final class BeanHelper {
+public final class BeanKernel {
     private static final Map<Class<?>, Object> BEAN_MAP = new HashMap<>();
 
     static {
-        ClassHelper.getBeanClassSet().forEach(cls -> BEAN_MAP.put(cls, ReflectionUtil.newInstance(cls)));
+        ClassKernel.getBeanClassSet().forEach(cls -> BEAN_MAP.put(cls, ReflectionUtil.newInstance(cls)));
     }
 
     /**
